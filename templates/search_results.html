@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    h3 {
+        color: #333;
+        text-align: center;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        background: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    a {
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .no-results {
+        text-align: center;
+        color: #777;
+    }
+</style>
+
+<h3>Kết quả tìm kiếm bài viết: "{{ query }}"</h3>
+
+{% if posts %}
+    <ul>
+        {% for post in posts %}
+            <li>
+                <!-- Sửa href để dẫn đến trang chi tiết của bài viết -->
+                <a href="{% url 'post-details' post.id %}">{{ post.caption }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="no-results">Không tìm thấy bài viết nào.</p>
+{% endif %}
+
+{% endblock %}

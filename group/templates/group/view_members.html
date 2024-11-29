@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thành viên Nhóm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .member {
+            text-align: center;
+            margin: 20px;
+            transition: transform 0.2s;
+        }
+
+        .member:hover {
+            transform: scale(1.05);
+        }
+
+        .member-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+
+        .member-name {
+            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Thành viên của nhóm: {{ group.name }}</h2>
+        {% if members %}
+        <ul class="list-unstyled d-flex flex-wrap mt-4">
+            {% for member in members %}
+            <li class="member">
+                <a href="{% url 'profile' member.user.username %}">
+                    <img src="{{ member.user.profile.image.url }}" alt="{{ member.user.username }}" class="member-image">
+                </a>
+                <p class="member-name">{{ member.user.profile.first_name }} {{ member.user.profile.last_name }}</p>
+        
+                {% if user == group.admin %}
+                    {% if member.can_post %}
+                        <a href="{% url 'toggle' group_id=group.id member_id=member.id %}" class="btn btn-warning">Không cho đăng bài</a>
+                    {% else %}
+                        <a href="{% url 'toggle' group_id=group.id member_id=member.id %}" class="btn btn-success">Cho phép đăng bài</a>
+                       
+
+                    {% endif %}
+                    <a href="{% url 'remove_member' group.id member.id %}" class="btn btn-danger">Xóa</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        
+
+        </ul>
+    {% else %}
+        <p>Không có thành viên nào trong nhóm này.</p>
+    {% endif %}
+    
+    
+        
+        <a href="{% url 'list_groups' %}" class="btn btn-primary">Quay lại danh sách nhóm</a>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

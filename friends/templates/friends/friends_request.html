@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu Cầu Kết Bạn</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .friend {
+            text-align: center; /* Căn giữa nội dung */
+            margin: 20px; /* Khoảng cách giữa các bạn bè */
+            transition: transform 0.2s; /* Hiệu ứng khi hover */
+        }
+
+        .friend:hover {
+            transform: scale(1.05); /* Phóng to khi hover */
+        }
+
+        .friend-image {
+            width: 100px; /* Kích thước ảnh lớn hơn */
+            height: 100px; /* Kích thước ảnh lớn hơn */
+            border-radius: 50%; /* Hình tròn cho ảnh */
+            object-fit: cover; /* Cắt ảnh để vừa khung */
+            border: 2px solid #007bff; /* Đường viền màu xanh */
+        }
+
+        .friend-name {
+            margin-top: 10px; /* Khoảng cách giữa ảnh và tên */
+            font-size: 1.5em; /* Kích thước chữ lớn hơn */
+            font-weight: bold; /* Làm đậm tên người dùng */
+            color: #333; /* Màu chữ tối */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Yêu Cầu Kết Bạn</h2>
+
+        {% if friend_requests %}
+            <ul class="list-unstyled d-flex flex-wrap mt-4">
+                {% for friend_request in friend_requests %}
+                <li class="friend">
+                    <a href="{% url 'profile' friend_request.from_user.username %}">
+                        <img src="{{ friend_request.from_user.profile.image.url }}" alt="{{ friend_request.from_user.username }}" class="friend-image">
+                    </a>
+                    <p class="friend-name">{{ friend_request.from_user.profile.first_name }} {{ friend_request.from_user.profile.last_name }}</p>
+                    
+                    <!-- Nút Accept và Delete -->
+                    <a href="{% url 'accept_friend_request' friend_request.id %}" class="btn btn-success">Chấp Nhận</a>
+                    <a href="{% url 'delete_friend_request' friend_request.id %}" class="btn btn-danger">Xóa</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Hiện không có yêu cầu kết bạn nào.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

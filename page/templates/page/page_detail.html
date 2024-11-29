@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <style>
+        .post-item img {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 5px;
+            margin: 0 auto 15px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 0;
+            background-color: #59708b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #a0b4ca;
+            transform: scale(1.05);
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+        form {
+            display: inline;
+        }
+        .post-list {
+            margin-top: 30px;
+        }
+        .post-item {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e7c0c0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .post-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .post-item h3 {
+            margin: 0 0 10px 0;
+            color: #2356c4;
+            font-size: 1.8em;
+        }
+        .post-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .post-item .content {
+            width: 100%;
+            max-width: 600px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            text-align: justify;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+        <!-- Edit and Delete Page buttons -->
+        {% if request.user == page.admin %}
+        
+        <a href="{% url 'page_update' page.pk %}" class="button">Edit Title</a>
+        <form action="{% url 'page_delete' page.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="button delete-button" id="xoa">Delete Page</button>
+
+        </form>
+        <script>
+            document.getElementById('xoa').addEventListener('click', function(event) {
+                event.preventDefault(); // Ngừng hành động mặc định của link
+            
+                // Hiển thị hộp thoại xác nhận
+                const userConfirmed = confirm("Are you sure you want to delete this page?");
+            
+                if (userConfirmed) {
+                    // Nếu người dùng chọn "OK", chuyển hướng đến URL tạo page
+                    this.closest('form').submit();
+                }
+                // Nếu người dùng chọn "Cancel", không làm gì cả
+            });
+            </script>
+            {% endif%}
+        <a href="{% url 'page_list' %}" class="button">Back to Page List</a>
+        <a href="{% url 'view_members' page.id %}" class="button">Xem tất cả thành viên</a>
+        {% if user == page.admin %}
+       
+            <a href="{% url 'manage_page_requests' page.id %}" class="button">Quản lý yêu cầu</a>
+            
+        
+       
+        {% endif %}
+
+        {% if can_post or is_admin %}
+        <a href="{% url 'post_create' %}?page_id={{ page.pk }}" class="button">Create Post</a>
+        {% else %}
+        <p>Bạn không có quyền đăng bài trong trang này.</p>
+        {% endif %}
+   
+
+        <!-- List of Posts -->
+        <div class="post-list">
+            {% for post in posts %}
+                <div class="post-item">
+                    <h3>{{ post.name }}</h3>
+                    <div class="content">{{ post.content }}</div>
+                    <img src="{{ post.images.url }}" alt="{{ post.name }}">
+                    
+                    <p><strong>Tag:</strong> {{ post.tag }}</p>
+                    <!-- Update Post Button -->
+                    {% if request.user == page.admin %}
+                    <a href="{% url 'post_update' post.id %}" class="button">Edit</a>
+
+                    <!-- Delete Post Form -->
+                    <form action="{% url 'post_delete' post.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button delete-button">Delete</button>
+                    </form>
+                    {%endif%}
+                </div>
+            {% endfor %}
+        </div>
+        <h2>Please let me know what you think about the page.</h2>
+          <!-- Like/Unlike Button -->
+          <!-- page_detail.html -->
+
+
+<!-- Hiển thị số lượt like -->
+<p>Count like: <span id="like-count">{{ page.likes.count }}</span></p>
+
+<!-- Nút Like/Unlike -->
+<a href="#" class="button" id="like-button" data-url="{% url 'toggle_like' page.pk %}">
+    <span id="like-text">
+        {% if request.user in page.likes.all %}
+            Unlike
+        {% else %}
+            Like
+        {% endif %}
+    </span>
+</a>
+
+<!-- JavaScript AJAX để cập nhật số lượng like mà không cần tải lại trang -->
+<script>
+document.getElementById('like-button').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    const url = this.getAttribute('data-url');
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Cập nhật văn bản nút Like/Unlike
+        document.getElementById('like-text').textContent = data.liked ? 'Unlike' : 'Like';
+
+        // Cập nhật số lượt like
+        document.getElementById('like-count').textContent = data.like_count;
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+    </div>
+</body>
+</html>

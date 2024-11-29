@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="text-align: center; color: #333;">Update Message</h2>
+<div class="container">
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+          <label for="body">Message Body:</label>
+          <textarea name="body" class="form-control">{{ message.body }}</textarea>
+      </div>
+      
+      <div class="form-group">
+          <label for="image" class="mt-3">Update Image:</label>
+          {% if message.image %}
+              <div>
+                  <img src="{{ message.image.url }}" alt="Current Image" style="max-width: 200px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+              </div>
+          {% endif %}
+          <input type="file" name="image" class="form-control-file">
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-2">Update</button>
+  </form>
+</div>
+
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      opacity: 0; /* Bắt đầu với độ mờ */
+      transition: opacity 0.5s; /* Hiệu ứng chuyển đổi độ mờ */
+  }
+  .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transform: translateY(20px); /* Bắt đầu từ vị trí thấp hơn */
+      opacity: 0; /* Bắt đầu với độ mờ */
+      transition: transform 0.5s, opacity 0.5s; /* Hiệu ứng chuyển đổi */
+  }
+  .form-control, .form-control-file {
+      margin-bottom: 15px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      width: calc(100% - 24px);
+      box-sizing: border-box;
+      transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .form-control:focus, .form-control-file:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  .btn {
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%; /* Đặt chiều rộng nút là 100% */
+  }
+  .btn:hover {
+      background-color: #0056b3;
+  }
+</style>
+
+<script>
+  // Hiệu ứng vào trang
+  window.onload = function() {
+      document.body.style.opacity = 1; // Hiện độ mờ của body
+      const container = document.querySelector('.container');
+      container.style.opacity = 1; // Hiện độ mờ của container
+      container.style.transform = 'translateY(0)'; // Di chuyển về vị trí ban đầu
+  }
+</script>
+{% endblock %}

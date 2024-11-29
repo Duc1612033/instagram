@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit Post{% else %}Create Post{% endif %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px); /* Đảm bảo ô input có chiều rộng bằng nhau */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="file"]:focus,
+        textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{% if form.instance.pk %}Edit Post{% else %}Create Post{% endif %}</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">{% if form.instance.pk %}Update Post{% else %}Create Post{% endif %}</button>
+        </form>
+        <div class="back-button">
+            <a href="{% url 'page_detail' pk=form.instance.page.id %}">Back to Page</a>
+        </div>
+    </div>
+</body>
+</html>

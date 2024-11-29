@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Nhóm</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền nhẹ nhàng */
+        }
+
+        .container {
+            margin-top: 110px !important; /* Đảm bảo có khoảng cách cho navbar */
+        }
+
+        h2 {
+            color: #333; /* Màu chữ tiêu đề */
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Khoảng cách giữa các trường */
+        }
+
+        .btn {
+            width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+            padding: 10px; /* Padding cho nút */
+        }
+
+        /* Căn chỉnh lề cho các ô input */
+        .form-control {
+            margin-top: 10px; /* Khoảng cách cho các ô */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Tạo Nhóm Mới</h2>
+        <form method="post" class="bg-light p-4 rounded shadow">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Tạo Nhóm</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+{% endblock %}

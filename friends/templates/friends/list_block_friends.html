@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Bạn Bị Block</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .friend {
+            text-align: center;
+            margin: 20px;
+            transition: transform 0.2s;
+        }
+
+        .friend:hover {
+            transform: scale(1.05);
+        }
+
+        .friend-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+
+        .friend-name {
+            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Danh Sách Bạn Bị Block</h2>
+
+        {% if blocked_users %}
+            <ul class="list-unstyled d-flex flex-wrap mt-4">
+                {% for blocked in blocked_users %}
+                <li class="friend">
+                    <a href="{% url 'profile' blocked.blocked_user.username %}">
+                        <img src="{{ blocked.blocked_user.profile.image.url }}" alt="{{ blocked.blocked_user.username }}" class="friend-image">
+                    </a>
+                    <p class="friend-name">{{ blocked.blocked_user.profile.first_name }} {{ blocked.blocked_user.profile.last_name }}</p>
+                    <a href="{% url 'unblock_friend' blocked.id %}" class="btn btn-danger">Unblock</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Hiện không có bạn bè nào bị block.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

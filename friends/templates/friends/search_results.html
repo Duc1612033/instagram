@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    h3 {
+        color: #333;
+        text-align: center;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        background: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    a {
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .no-results {
+        text-align: center;
+        color: #777;
+    }
+</style>
+
+<h3>Kết quả tìm kiếm: "{{ query }}"</h3>
+
+{% if friends %}
+    <ul>
+        {% for friend in friends %}
+            <li>
+                <a href="{% url 'profile' friend.user.username %}">
+                    {{ friend.user.username }}  <!-- Hiển thị tên người dùng của bạn bè -->
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Không tìm thấy bạn bè nào.</p>
+{% endif %}
+{% endblock %}
+
+

@@ -1,0 +1,51 @@
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Cá Nhân</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            text-align: center;
+        }
+        .profile-header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .profile-header h2 {
+            font-size: 2em; /* Tăng cỡ chữ */
+            margin: 10px 0;
+        }
+        .profile-header p {
+            font-size: 1.2em; /* Tăng cỡ chữ */
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="profile-header">
+                <img src="{{ profile.image.url }}" alt="{{ profile.user.username }}">
+                <h2>{{ profile.user.username }}</h2>
+                <p>{{ private_message }}</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

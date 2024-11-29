@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            transition: color 0.3s ease;
+        }
+        p:hover {
+            color: #007bff;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            background-color: #2e547c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn:hover {
+            background-color: #7597bb;
+            transform: translateY(-2px);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1em;
+            color: #777;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About This Instagram Application</h1>
+        <p>Welcome to our sample Instagram-like application! Here, you can create and manage your pages easily. This platform allows users to share images, connect with others, and explore a variety of content.</p>
+        <p>Our goal is to provide a user-friendly experience where you can express yourself and discover new ideas. Whether you're an artist, a photographer, or just someone who loves sharing moments, this application is designed for you.</p>
+        <p>Feel free to explore the features and create your own unique pages!</p>
+        <div class="btn-container">
+            <a href="{% url 'page_create' %}" class="btn" id="create-page-btn">Create a New Page</a>
+            <a href="{% url 'page_list' %}" class="btn">Go to Page List</a>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Instagram-like Application. All rights reserved.
+    </footer>
+    <script>
+    document.getElementById('create-page-btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Ngừng hành động mặc định của link
+
+        // Hiển thị hộp thoại xác nhận
+        const userConfirmed = confirm("Are you sure you want to create a new page?");
+
+        if (userConfirmed) {
+            // Nếu người dùng chọn "OK", chuyển hướng đến URL tạo page
+            window.location.href = this.href;
+        }
+        // Nếu người dùng chọn "Cancel", không làm gì cả
+    });
+    </script>
+</body>
+</html>

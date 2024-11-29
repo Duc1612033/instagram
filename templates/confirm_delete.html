@@ -1,0 +1,9 @@
+<h2>Xác nhận xóa bình luận</h2>
+<p>Bạn có chắc chắn muốn xóa bình luận này không?</p>
+<p>"{{ comment.body }}"</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    
+  
+</form>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page List</title>
+    <style>
+        
+         .join-button{
+            margin-left: auto;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .join-button {
+            background-color: #474c52;
+            color: white;
+            border: none;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e6dfdf;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .page-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .page-list li {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .page-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .page-list li a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .page-list li a:hover {
+            color: #0056b3;
+        }
+        .create-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 20px;
+            background-color: #2a75c5;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            max-width: 200px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        .create-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Page List</h1>
+        <ul class="page-list">
+            {% for page in pages %}
+            {% if user != page.admin %}
+            <a href="{% url 'toggle_page_membership' page.id %}" class="join-button">
+                {% if user in page.members.all %}
+                    Hủy tham gia
+                {% else %}
+                    Tham gia
+                {% endif %}
+            </a>
+        {% endif %}
+                <li><a href="{% url 'page_detail' page.pk %}">{{ page.title }}</a></li>
+              
+            {% endfor %}
+        </ul>
+        <a href="{% url 'page_create' %}" class="create-btn" id="create-btnn">Create New Page</a>
+       
+        <script>
+            document.getElementById('create-btnn').addEventListener('click', function(event) {
+                event.preventDefault(); // Ngừng hành động mặc định của link
+
+                // Hiển thị hộp thoại xác nhận
+                const userConfirmed = confirm("Are you sure you want to create a new page?");
+
+                if (userConfirmed) {
+                    // Nếu người dùng chọn "OK", chuyển hướng đến URL tạo page
+                    window.location.href = this.href;
+                }
+                // Nếu người dùng chọn "Cancel", không làm gì cả
+            });
+        </script>
+    </div>
+</body>
+</html>
